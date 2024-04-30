@@ -1,0 +1,26 @@
+services:
+  master:
+    image: dzhekoriginal/master:latest
+    ports:
+      - "4000:3000"
+    command: sh -c "sleep 15s ; python master.py"
+    depends_on:
+      - mysql
+
+  mysql:
+    image: dzhekoriginal/mysql:latest
+    restart: always
+    environment:
+      MYSQL_DATABASE: 'db'
+      MYSQL_ROOT_PASSWORD: 'pass'
+    ports:
+      - '3306:3306'
+
+  monitoring:
+    image: dzhekoriginal/monitoring:latest
+    restart: always
+    ports:
+      - 8000:8000
+    command: sh -c "sleep 15s ; python main.py"
+    depends_on:
+      - master
